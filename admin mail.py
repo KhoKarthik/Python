@@ -1,10 +1,10 @@
-import smtplib
+limport smtplib
 import openpyxl as xl
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
-username ='admin@vact-tech.com'
-password ='Admin@678'
+username ='web mail'
+password ='pswd'
 From = username
 Subject = 'OPENINGS FOR EMBEDDED AUTOMOTIVE DOMAIN'
 
