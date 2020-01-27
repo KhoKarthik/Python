@@ -5,8 +5,8 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email import encoders
 
-username = 'karthikb9596@gmail.com'
-password = '12105795'
+username = 'ur gmail'
+password = 'password'
 From = username
 Subject = 'OPENINGS FOR EMBEDDED AUTOMOTIVE DOMAIN'
 
