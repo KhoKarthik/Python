@@ -3,8 +3,8 @@ import openpyxl as xl
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
-username ='admin@vact-tech.com'
-password ='Admin@678'
+username ='webmail'
+password ='ur paswd'
 From = username
 Subject = 'OPENINGS FOR EMBEDDED AUTOMOTIVE DOMAIN'
 
