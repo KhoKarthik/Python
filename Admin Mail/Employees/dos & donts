@@ -1,0 +1,77 @@
+import smtplib
+import docx
+import openpyxl as xl
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from email.mime.base import MIMEBase
+from email import encoders
+
+username = 'MAIL ID'
+password = 'PASSWORD'
+From = username
+Subject = 'Do’s and Dont’s in Corporate'
+
+wb = xl.load_workbook(r'C:\Users\ADMIN\Desktop\email1.xlsx')
+sheet1 = wb.get_sheet_by_name('Sheet1')
+
+names = []
+emails = []
+
+for cell in sheet1['A']:
+    emails.append(cell.value)
+
+for cell in sheet1['B']:
+    names.append(cell.value)
+
+server = smtplib.SMTP('smtp.gmail.com', 587)
+server.starttls()
+server.login(username, password)
+
+for i in range(len(emails)):
+    msg = MIMEMultipart()
+    msg['From'] = username
+    msg['To'] = names[i]
+    msg['Subject'] = Subject
+    text = '''
+Dear Candidate,
+
+The Don’ts:
+
+	Don’t have a personal conversation at your desk.
+	Don’t bring your emotions into the office.
+	Don’t be afraid to ask questions, despite how silly you think they seem.
+	Don’t apply for a job you don’t want.
+	Don’t be nervous, but also don’t overstep your boundaries.
+	Do not wear weekend attire to the office.
+
+The Dos:
+
+	Do arrive early.
+	Do be willing to engage a coworker who asks for your help.
+	Do jump at the chance to complete a new task.
+	Do be open-minded.
+	Do always wear a smile.
+	Do be flexible.
+
+
+    Regards
+
+    HR Dept
+    VAct TECHNOLOGIES
+
+    No 145 A2, Saradha Mill Road,
+    opposite to Koushika Hospital,
+    Sundarapuram, Coimbatore 641024
+
+    Phone: +91 7871909590
+    e-mail: careers@vact-tech.com
+'''.format(names[i])
+    msg.attach(MIMEText(text, 'plain'))
+    message = msg.as_string()
+    server.sendmail(username, emails[i], message)
+print('Mail sent to:', emails[i])
+
+print('All Mails are sent successfully!')
+
+server.quit()
+
