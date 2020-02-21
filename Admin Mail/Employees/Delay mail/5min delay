@@ -1,0 +1,96 @@
+import smtplib
+import time
+import schedule 
+import config 
+import openpyxl as xl
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
+# Your Excel Sheet PAth to be Mentioned Here
+wb = xl.load_workbook(r'C:\Users\ADMIN\Desktop\recipients.xlsx')
+# NAme of the TAb in excel where you need to read the Email
+sheet1 = wb.get_sheet_by_name('Sheet1')
+From =  'VAct Technologies'
+Subject = 'WALK-IN FOR EMBEDDED AUTOMOTIVE DOMAIN'
+
+names = []
+emails = []
+
+#Emails NAME should be in A & B column only
+for cell in sheet1['A']:
+    emails.append(cell.value)
+    
+for cell in sheet1['B']:
+    names.append(cell.value)
+    
+    
+#Company SERVER ID with PORT
+server = smtplib.SMTP('mail.vact-tech.com', 587)
+server.starttls()
+server.login(config.username, config.password)
+
+for i in range(len(emails)):
+    msg = MIMEMultipart()
+    msg['From'] = From
+    msg['To'] = names[i]
+    msg['Subject'] = Subject
+    text = '''
+Dear Applicant,
+
+    Trust you are well,
+
+    Thank you for showing your interest to be an "Automotive Embedded Engineer" with reference to your application via Job portal.
+
+    We would like discuss with you F2F to find out the possibility to provide an opportunity with our UK/Singapore client
+    and for a Electric Vehicle manufacturer in Coimbatore.
+
+    Hereby we are conducting WALK-IN Interview on following days for the suitable candidates.
+
+    Days     :  15th Feb 2020 (SATURDAY)
+    Timings  :  10 AM Till 12 PM 
+
+
+    Interview:
+
+            1. Technical Round - C Language, Assembly Language, Questions related with Embedded Controllers & Protocols,
+                                 Projects noted in your CV etc.
+            2. F2F with HRM.
+
+    Location Map  : https://maps.app.goo.gl/nUJhg
+    Work Location : Coimbatore Either at Inhouse or Deputation at Client Location.
+
+    Visit & Connect with us:
+        For Embedded Training Automotive Protocols: http://vact-tech.in/cources/
+        Facebook :https://www.facebook.com/Vact-Technologies-125919400846564/
+        Linkedin :https://www.linkedin.com/in/v-act-technologies-0636612a/
+        Twitter:https  ://twitter.com/VactT
+        Google: https  ://www.google.com/search?q=vact+technologies&oq=VAct+technolog&aqs=chrome.0.0j69i57j69i59l2j0l3j69i60.4975j0j7&sourceid=chrome&ie=UTF-8#lrd=0x3ba85a3b5f6560cd:0xe33373e99fb1454e,1,,,
+                                        
+    Regards
+    
+    HR Dept
+    VAct TECHNOLOGIES
+    Phone: +91 7871909590
+    Mail: careers@vact-tech.com
+    ADDRESS: No 145 A2, Saradha Mill Road,
+    opposite to Koushika Hospital,
+    Sundarapuram, Coimbatore 641024
+'''.format(names[i])
+    msg.attach(MIMEText(text, 'plain'))
+    message = msg.as_string()
+   
+    #MAIL SEND THROUGH YOUR EMAIL ID TO RECEPIENTS WITH MESSAGE
+    server.sendmail(config.username, emails[i], message)
+
+    #PRINTING ALL MAIL ID'S OF RECEPIENTS
+    print('Mail sent to:', emails[i])
+    
+    #After Sending 100 Mails this may Generate 5 minutes Delay 
+    if( i % 100 == 0) & ( i != 0 ):
+        time.sleep(300)
+        
+#AFTER SENDS ALL MAILS WITH DELAY ITS BECOMES QUIT THE SERVER
+server.quit()
+#FINAL PRINTING MESSAGE
+print('All Mails are sent successfully!')
+ 
